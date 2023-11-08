@@ -1,0 +1,238 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+
+{{ ckeditor.load() }}
+{{ ckeditor.config(name='content') }}
+
+<div class="container-fluid">
+  <div class="row justify-content-evenly">
+    <!-- ================= Timeline ================= -->
+    <div class="col-12 col-lg-8 pb-5">
+      <div class="d-flex flex-column justify-content-center w-100 mx-auto"  style="padding-top: 56px; max-width: 100%">
+
+        <!-- Post uploading  -->
+        <div class="bg-white p-4 rounded shadow mt-3">
+          <!-- author -->
+          <div class="d-flex justify-content-between">
+            <!-- avatar -->
+            <div class="d-flex">
+              <img src="{{ image }}" alt="avatar" class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover"/>
+              <div>
+                <p class="my-2 fw-bold">{{ current_user.firstname }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flash messages -->
+        <div>
+          {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+          <div class="mt-3">
+            <form method="POST" enctype="multipart/form-data">
+              {{ form.hidden_tag() }}
+              <div>
+                {% if form.content.errors %}
+                <div class="alert alert-danger">
+                  {{ form.content.errors.0 }}
+                </div>
+                {% endif %}
+              </div>
+              <div class="form-floating text-muted fs-6">
+                {{ form.title(class="form-control my-2", placeholder="", id="floatingInput") }}
+                {{ form.title.label(for="floatingInput") }}
+              </div>
+              <div class="text-muted fs-6">
+                {{ form.content(class="form-control my-2", placeholder="Email Address", id="floatingInput") | safe }}
+              </div>
+              <div>
+                {{ form.image(class="form-control my-2") }}
+              </div>
+              {{ form.submit(class="btn fw-bold  my-3 w-100", style="background-color: #FF7518; color: #fff;") }}
+            </form>
+        </div> 
+        </div>
+
+        {% for post in posts %}
+            <div class="bg-white p-4 rounded shadow mt-3">
+              <div class="d-flex justify-content-between">
+                <div class="d-flex">
+                  <img src="{{ url_for('static', filename='images/profile_pics/' + post.author.profile) }}" alt="avatar" class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover"/>
+                  <div>
+                    <p class="m-0 fw-bold">{{ post.author.firstname }}</p>
+                    <span class="text-muted fs-7">{{ post.date_posted.strftime('%Y-%m-%d') }}</span>
+                  </div>
+                </div>
+
+    
+
+                <!-- edit -->
+                <i class="fa-solid fa-ellipsis-vertical" type="button" id="post1Menu" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                <!-- edit menu -->
+                <ul class="dropdown-menu border-0 shadow" aria-labelledby="post1Menu">
+                  <li class="d-flex align-items-center">
+                    <a class="dropdown-item d-flex justify-content-around align-items-center fs-7"   href="{{ url_for('post.update_post', id=post.id) }}">
+                      Edit Post
+                    </a>
+                  </li>
+                  <li class="d-flex align-items-center">
+                    <a class="dropdown-item d-flex justify-content-around align-items-center fs-7"
+                      href="{{ url_for('post.delete_post', id=post.id) }}">
+                      Delete Post
+                    </a>
+                  </li>
+                </ul>
+
+              </div>
+
+
+              <!-- post content -->
+              <div class="mt-3">
+                <!-- content -->
+                <div class="fw-bold fs-5">
+                  {{ post.title }}
+                </div>
+                <div class="fs-6">
+                  <p>{{ post.content | safe }}</p>
+                  {% if post.image %}
+                    <div class="text-center">
+                    <img src="{{ url_for('static', filename='images/' + post.author.email + '/' + post.image) }}" alt="post image" class="img-fluid rounded"/>
+                    </div>
+                  {% endif %}
+                </div>
+
+
+                <!-- likes & comments -->
+                <div class="post__comment mt-3 position-relative">
+                  <!-- likes -->
+                  <div class=" d-flex align-items-center top-0 start-0 position-absolute" style="height: 50px; z-index: 5">
+                    <div class="me-2">
+                      <i class="text-primary fas fa-thumbs-up"></i>
+                    </div>
+                    <p class="m-0 text-muted fs-7">Phu, Tuan, and 3 others</p>
+                  </div>
+                  <!-- comments start-->
+                  <div class="accordion" id="123">
+                    <div class="accordion-item border-0">
+                      <!-- comment collapse -->
+                      <h2 class="accordion-header" id="headingTwo">
+                        <div class=" accordion-button collapsed pointer d-flex justify-content-end" data-bs-toggle="collapse" data-bs-target="#collapse{{ post.id }}" aria-expanded="false" aria-controls="collapse{{ post.id }}">
+                          <p class="m-0">2 Comments</p>
+                        </div>
+                      </h2>
+                      <hr/>
+
+
+                      <!-- comment & like bar -->
+                      <div class="d-flex justify-content-around">
+                        <div class="dropdown-item rounded d-flex justify-content-center align-items-center pointer text-muted p-1">
+                          <button class="m-0 btn btn-light"><i class="fas fa-thumbs-up text-muted"></i></button>
+                        </div>
+                        <div
+                          class="dropdown-item rounded d-flex justify-content-center align-items-center pointer text-muted p-1" data-bs-toggle="collapse"data-bs-target="#collapse{{ post.id }}" aria-expanded="false" aria-controls="collapse{{ post.id }}">
+                          <button class="m-0 btn btn-light"><i class="fas fa-comment-alt text-muted"></i></i></button>
+                        </div>
+                      </div>
+
+
+
+
+
+
+
+
+                      <!-- comment expand -->
+                      <div id="collapse{{ post.id }}" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="123">
+                        <hr />
+                    <!-- Changes done here !!  -->
+                        <div class="accordion-body">
+           
+                          <div id="comments-container-{{ post.id }}" style="max-height: 300px; overflow-y: auto; ">
+
+                          </div>
+                          
+                          <div class="text-center my-4" id="load-div-{{ post.id }}">
+                            <form  class="load-comments" id="load-comments-{{ post.id }}">
+                              <input type="hidden" value="{{ post.id }}" name="post_id" >
+                              <input type="submit" class="btn btn-primary" value="Load Comments">
+                            </form>
+                          </div>
+                          
+                          
+               
+                          <!-- create comment -->
+                        <form class="d-flex comment-form"> 
+                            <div class="mx-1">
+                                <img src="{{ image }}" alt="avatar" class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;" />
+                            </div>
+  
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+
+                            <div class="d-flex">
+                                <div class="mx-1">
+                                  <input type="text" placeholder="comment here"class="form-control border-0 rounded-pill bg-gray"  name="comment" style="width: 40rem;" id="comment-box-{{ post.id }}">
+                                  <input type="submit"  class="d-none">
+                                </div>
+                            </div>
+
+                        </form>
+               
+                         
+                        </div>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- end -->
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+
+
+
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock content %}
+
+
+{% block script %}
+
+<script src="{{ url_for('static', filename='js/comments.js') }}"></script>
+<script src="{{ url_for('static', filename='js/likes.js') }}"></script>
+
+{% endblock script %}

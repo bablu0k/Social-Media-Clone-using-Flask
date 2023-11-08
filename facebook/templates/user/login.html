@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+    <!-- Title and Add ons -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Boostrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- Main  CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  <title>{{ title }}</title>
+</head>
+
+
+<body class="bg-gray">
+
+  <div class="container d-flex flex-column flex-lg-row justify-content-evenly mt-3 pt-3">
+
+    <!-- INFO on the left side -->
+    <div class="text-center text-lg-start mt-lg-5 pt-lg-5">
+      <h1 class="fw-bold fs-0" style="color: #FF7518;">LifeNarratives</h1>
+      <p class="w-75 mx-auto mx-lg-0 fs-4">LifeNarratives help you to connect people all over the world</p>
+    </div>
+
+
+
+<!-- =================================== LOGIN FORM ========================================== -->
+
+    <!-- form -->
+    <div style="max-width: 28rem; width: 100%;">
+      <div class="bg-white shadow rounded p-3 input-group-lg">
+
+        <!-- Flash messages -->
+        <div>
+          {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+
+
+        <!-- Login Form on the Right side -->
+        <form method="POST">
+          {{ form.hidden_tag() }}
+          <div class="form-floating text-muted fs-6">
+          {{ form.email(class="form-control my-2", placeholder="Email Address", id="floatingInput") }}
+          {{ form.email.label(for="floatingInput") }}
+          </div>
+          <div class="form-floating text-muted fs-6">
+            {{ form.password(class="form-control my-2", placeholder="Password", id="floatingpassword") }}
+            {{ form.password.label(for="floatingpassword") }}
+          </div>
+          <a href="#" class="text-decoration-none text-left"><p>Forgot Password ?</p></a>
+          {{ form.submit(class="btn fw-bold  my-3 w-100", style="background-color: #FF7518; color: #fff;") }}
+        </form>
+
+        <!-- TOGGLE -->
+        <div class="text-center my-2">
+          <a class="text-decoration-none" href="{{ url_for('user.register') }}">New User ?</a>
+        </div>
+        
+      </div>
+    </div>
+
+
+
+
+<!-- =================================== FOOTER ============================================= -->
+
+
+  <footer class="bg-white p-0 text-muted">
+    <div class="container my-3">
+      <!-- language -->
+      <div class="d-flex flex-wrap">
+        <p class="mx-2 fs-7 mb-0">English (US)</p>
+        <p class="mx-2 fs-7 mb-0">Tiếng Việt</p>
+        <p class="mx-2 fs-7 mb-0">中文(台灣)</p>
+        <p class="mx-2 fs-7 mb-0">한국어</p>
+        <p class="mx-2 fs-7 mb-0">日本語</p>
+      </div>
+      <hr />
+      <!-- actions -->
+      <div class="d-flex flex-wrap">
+        <p class="mx-2 fs-7 mb-0">Sign Up</p>
+        <p class="mx-2 fs-7 mb-0">Login</p>
+        <p class="mx-2 fs-7 mb-0">LN - TheChatter</p>
+        <p class="mx-2 fs-7 mb-0">LifeNarratives Lite</p>
+        <p class="mx-2 fs-7 mb-0">Watch</p>
+      </div>
+      <!-- copy -->
+      <div class="mt-4 mx-2">
+        <p class="fs-7">LifeNarratives &copy; 2023</p>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

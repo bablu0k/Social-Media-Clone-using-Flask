@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+ <!-- Title and Addons -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Boostrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- Main  CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  {% block css %} {% endblock css %}
+  <title>{{ title }}</title>
+</head>
+
+
+
+<body class="bg-gray">
+
+
+<!-- ===================================== Logo & Search ================================== -->
+
+  <div class="bg-white d-flex align-items-center fixed-top shadow" style="min-height: 56px; z-index: 5;">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+
+
+        <!-- Left Part  -->
+
+        <div class="d-none col d-lg-flex align-items-center">
+
+          <!-- Website Logo  -->
+          <a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/ln.jpeg') }}" class="rounded-circle" style="width: 3rem;"></a>
+
+          <!-- Search bar -->
+          <div class="input-group ms-2">
+
+            <input type="text"  class="form-control rounded-pill border-0 bg-gray pointer" style="max-width: 50%;"  placeholder="Search"  data-bs-toggle="dropdown"/>
+
+            
+            <ul  class="dropdown-menu overflow-auto border-0 shadow p-3"  aria-labelledby="searchMenu"  style="width: 20em; max-height: 600px"  >
+
+                <li class="my-4">
+                  <div class="alert  fade  show  dropdown-item  p-1  m-0  d-flex  align-items-center    justify-content-between"  role="alert" >
+                    <div class="d-flex align-items-center">
+                      <img  src="{{ url_for('static', filename='images/default.jpg') }}"   alt="avatar"  class="rounded-circle me-2"  style="width: 35px; height: 35px; object-fit: cover"  />
+                      <p class="m-0">Search Results</p>
+                    </div>
+                    <button  type="button"    class="btn-close p-0 m-0"   data-bs-dismiss="alert"  aria-label="Close" >       </button>
+                  </div>
+                </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+
+
+
+
+   <!-- =========================================== Navigation ================================ -->
+
+
+        <!-- Nav  -->
+        <div class="col">
+          <div class="d-flex justify-content-evenly">
+
+            <!-- Home -->
+            <a href="{{ url_for('main.home') }}">
+              <div class="mx-4 nav__btn {% if request.path == url_for('main.home') %}nav__btn-active {% endif %}">
+                <button class="btn px-4">
+                  <i class="fa-solid fa-house text-muted fs-4"></i>
+                </button>
+              </div>
+            </a>
+
+            <!-- Posts -->
+            <a href="{{ url_for('post.posts') }}">
+              <div class="mx-4 nav__btn {% if request.path == url_for('post.posts') %}nav__btn-active {% endif %}">
+                <button class="btn px-4">
+                  <i class="fa-solid fa-store text-muted fs-4"></i>
+                </button>
+              </div>
+            </a>
+
+            <!-- Groups -->
+            <a href="{{ url_for('group.groups') }}">
+              <div class="mx-4 nav__btn {% if request.path == url_for('group.groups') %}nav__btn-active {% endif %}">
+                <button type="button" class="btn px-4">
+                  <i class="fa-solid fa-users position-relative text-muted fs-4">
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">
+                    19+</span></i>
+                </button>
+              </div>
+            </a>
+
+
+
+          </div>
+        </div>
+
+
+
+
+
+    <!-- ================================== Profile ========================================== -->
+
+
+        <div class="d-none col d-lg-flex align-items-center justify-content-end">
+
+
+          <!-- Profile pic and name -->
+          <div class="align-items-center justify-content-center d-none d-xl-flex me-4" id="mainMenu"  data-bs-toggle="dropdown"    data-bs-auto-close="outside">
+            <img src="{{ image }}" class="rounded-circle me-2 " alt="avatar" style="width: 38px; height: 38px; object-fit: cover" type="button"/>
+            <p class="m-0" type="button">{{ current_user.lastname }}</p>
+          </div>
+     
+          <!-- Options  -->
+          <ul class="dropdown-menu border-0 shadow p-2"  aria-labelledby="secondMenu"  style="width: 5em">
+
+            <li class="dropdown-item  my-2 rounded" type="button">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a  href="{{ url_for('main.account') }}"  class="d-flex text-decoration-none text-dark"  >
+                    <i class="fa-solid fa-user p-2 rounded-circle "></i>
+                    <div  class="ms-2 d-flex  justify-content-between  align-items-center  w-100 "  >
+                      <p class="m-0">Account Details</p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          
+            <li class="dropdown-item my-2 rounded" type="button">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a  href="{{ url_for('user.logout') }}"  class="d-flex text-decoration-none text-dark"  >
+                    <i class="fa-solid fa-right-from-bracket p-2 rounded-circle"></i>
+                    <div  class="ms-2  d-flex  justify-content-between  align-items-center  w-100 "  >
+                      <p class="m-0">Log Out</p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
+                    
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+{% block content %}
+{% endblock content %}
+
+
+
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <!-- Main JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+  {% block script %}
+  {% endblock script %}
+
+</body>
+</html>

@@ -1,0 +1,114 @@
+{% extends 'main/layout.html' %}
+
+
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row justify-content-evenly">
+    <!-- ================= Timeline ================= -->
+    <div class="col-12 col-lg-8 pb-5">
+      <div class="d-flex flex-column justify-content-center w-100 mx-auto"  style="padding-top: 56px; max-width: 100%">  
+        <div class="bg-white p-4 rounded shadow mt-3">
+          <div class="d-flex justify-content-between">
+
+
+            <!-- Left Side -->
+            <div class="">
+              <img src="{{ image }}" alt="avatar" class="rounded-circle me-2" style="width: 138px; height: 138px; object-fit: cover"/>
+              <div>
+                <p class="mt-5 fw-bold fs-5">{{ current_user.firstname }} {{ current_user.lastname }}</p>
+                <p class="mt-1 fs-6"><i class="fa-solid fa-envelope me-2"></i>{{ current_user.email }}</p>
+                <p class="mt-1 fs-6">
+                  {% if current_user.gender == 'male' %}
+                  <i class="fa-solid fa-mars me-2"></i>Male
+                  {% else %}
+                  <i class="fa-solid fa-venus me-2"></i>Female
+                  {% endif %}
+                </p>
+                <p class="mt-1 fs-6"><i class="fa-regular fa-calendar-days me-2"></i>{{ current_user.date_joined.strftime('%Y-%m-%d') }}</p>        
+              </div>
+            </div>
+            
+            
+            <!-- Right Side -->
+              <div class="bg-white shadow rounded p-3 input-group-lg" style="max-width: 28rem; width: 100%;">
+                
+                <!-- Flash messages -->
+                <div>
+                  {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                      {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                  {% endwith %}
+                </div>
+                
+        
+                <form method="POST" enctype="multipart/form-data">
+                  {{ form.hidden_tag() }}
+                  <div class="row">
+        
+                    
+        
+        
+                    <!-- firstname and lastname -->
+                    <div class="col">
+                      <div class="form-floating text-muted fs-6">
+                      {{ form.firstname(class="form-control", placeholder="First Name", id="fn") }}
+                      {{ form.firstname.label(for="floatingfn") }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-floating text-muted fs-6">
+                        {{ form.lastname(class="form-control", placeholder="Last Name", id="ln") }}
+                        {{ form.lastname.label(for="floatingln") }}
+                        </div>
+                    </div>
+                  </div>
+        
+                  <!-- email and password and confirm password-->
+                    <div class="form-floating text-muted fs-6 my-2">
+                    {% if form.email.errors %}
+                    {{ form.email(class="form-control is-invalid", placeholder="Email", id="email") }}
+                    {{ form.email.label(for="email") }}
+                    {% else %}
+                    {{ form.email(class="form-control", placeholder="Email", id="email") }}
+                    {{ form.email.label(for="email") }}
+                    {% endif %}
+                    </div>
+
+                  <!-- Gender-->
+                  <div class="form-control  text-muted fs-6 my-2">
+                    {{ form.gender.label }}
+                    <div class="row">
+                    {% for choice in form.gender %} 
+                    <div class="col">
+                      {{ choice }}
+                      {{ choice.label }}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  </div>
+                  <div>
+                    {{ form.profile(class="form-control my-2") }}
+                  </div>
+        
+                  <!-- Submit -->
+                  {{ form.submit(class="btn fw-bold my-4 w-100", style="background-color: #FF7518; color: #fff;") }}
+                </form>
+              </div>
+            
+          </div>
+        </div>    
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
